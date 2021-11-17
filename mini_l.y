@@ -24,6 +24,10 @@ stack<char*> func_print_stack;
 char list_of_function_names[100][100];
 int  count_names = 0;
 
+string newTemp();
+string newLabel();
+stringstream* temp_count;
+stringstream* label_count;
 
 %}
 
@@ -414,4 +418,20 @@ void yyerror(const char* s){
 	extern char* yytext;
 	printf("ERROR: %s at symbol \"%s\" on line %d\n", s, yytext, currentLine);
 	exit(1);
+}
+
+string newTemp() {
+	int temp_count = 0;
+  	stringstream ss;
+  	ss << temp_count++;
+  	string temp = "__temp__" + ss.str();
+  	return temp;
+}
+
+string newLabel() {
+	int label_count = 0;
+	stringstream ss;
+  	ss << label_count++;
+  	string temp = "__label__" + ss.str();
+  	return temp;
 }
