@@ -400,15 +400,3 @@ void yyerror(const char* s){
 	printf("ERROR: %s at symbol \"%s\" on line %d\n", s, yytext, currentLine);
 	exit(1);
 }
-
-std::string newLabel(){
-	static int num = 0;
-	std::string temp = "__label__" + std::ostringstream(num++);
-	return temp;
-}
-
-std::string newTemp(){
-	static int num = 0;
-	std::string temp = "__temp__" + std::ostringstream(num++);
-	return temp;
-}

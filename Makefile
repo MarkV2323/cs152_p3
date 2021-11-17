@@ -5,6 +5,9 @@ OBJS	= bison.o lex.o main.o
 CC	= g++
 CFLAGS	= -g -Wall -ansi -pedantic
 
+our_comp:	$(OBJS)
+		$(CC) $(CFLAGS) $(OBJS) -o our_comp -lfl
+
 parse:		$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o parse -lfl
 
@@ -27,7 +30,7 @@ main.o:		main.cc
 		$(CC) $(CFLAGS) -c main.cc -o main.o
 
 lex.o yac.o main.o	: includes.h
-lex.o main.o		: tok.h
+# lex.o main.o		: tok.h
 
 clean:
-	rm -f *.o *~ lex.c lex.yy.c bison.c tok.h mini_l.tab.c mini_l.tab.h mini_l.output parse
+	rm -f *.o *~ lex.c lex.yy.c bison.c tok.h mini_l.tab.c mini_l.tab.h mini_l.output parse our_comp
