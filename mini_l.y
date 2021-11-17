@@ -1,6 +1,7 @@
 /*C Declarations*/
 %{
 #include <iostream>
+#include <stack>
 #include "includes.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,13 +20,9 @@ extern int currentLine;
 extern int currentColumn;
 extern char* yytext;
 
-std::string newTemp();
-std::string newLabel();
-
-char empty[1] = "";
-
-std::map<std::string, int> variables;
-std::map<std::string, int> functions;
+stack<char*> func_print_stack;
+char list_of_function_names[100][100];
+int  count_names = 0;
 
 
 %}
@@ -137,6 +134,23 @@ ident:		IDENTIFIER {//printf("ident -> IDENT %s\n", $1);
 
 function:	FUNCTION IDENTIFIER SEMICOLON BEGIN_PARAMS parameters {//printf("function -> FUNCTION IDENTIFIER SEMICOLON BEGIN_PARAMS parameters \n");
 			//
+            char *token = yytext;
+
+            // Push to stack!
+            func_print_stack.push("\n");
+            func_print_stack.push(token);
+            func_print_stack.push("func ");
+            // printf("func %s\n", token);
+
+            // Add name to strcpy
+            strcpy(list_of_function_names[count_names], token);
+            count_names++;
+
+            // Empty the print stack!
+			while (!func_print_stack.empty()) {
+                    printf(func_print_stack.top());
+                    func_print_stack.pop();
+            }
 		}
 ;
 parameters: 	declaration SEMICOLON parameters {//printf("parameters -> declaration SEMICOLON parameters \n");
@@ -156,8 +170,9 @@ locals:		declaration SEMICOLON locals {//printf("locals -> declaration SEMICOLON
 bstatements:	statement SEMICOLON bstatements {//printf("bstatements -> statement SEMICOLON bstatements \n");
 			//
 		}
-		| statement SEMICOLON END_BODY {//printf("bstatements -> statement SEMICOLON END_BODY \n");
-			//
+		| statement SEMICOLON END_BODY {//printf("endfunc\n");
+            // Push to stack!
+            func_print_stack.push("endfunc\n");
 		}
 ;
 
